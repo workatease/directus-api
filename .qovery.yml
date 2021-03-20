@@ -3,11 +3,12 @@ application:
   name: "directus-api"
   project: "Agrigates"
   organization: "QoveryCommunity"
-  cpu: "800m"
+  cpu: 1
+  dockerfile: directus/Dockerfile
   storage:
     - name: "upload"
       size: "10"
-      type: "fast_ssd"
+      type: "ssd"
       mount_point: "/mnt/upload"
 databases:
   - type: "POSTGRESQL"
