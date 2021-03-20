@@ -1,0 +1,15 @@
+---
+application:
+  name: "directus-api"
+  project: "Agrigates"
+  organization: "QoveryCommunity"
+databases:
+- type: "MYSQL"
+  name: "directus"
+  version: "8"
+routers:
+- name: "main-directus-api"
+  routes:
+  - application_name: "directus-api"
+    paths:
+    - "/*"
