@@ -3,6 +3,7 @@ application:
   name: "directus-api"
   project: "Agrigates"
   organization: "QoveryCommunity"
+  cpu: "800m"
   storage:
     - name: "upload"
       size: "10"
