@@ -3,10 +3,15 @@ application:
   name: "directus-api"
   project: "Agrigates"
   organization: "QoveryCommunity"
+  storage:
+  - name: "upload"
+    size: "10"
+    type: "fast_ssd"
+    mount_point: "/mnt/upload"
 databases:
 - type: "POSTGRESQL"
   name: "directus"
-  version: "11"
+  version: "10"
 routers:
 - name: "main-directus-api"
   routes:
