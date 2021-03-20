@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx directus bootstrap && directus start",
+    "prestart": "npx directus bootstrap",
+    "start": "directus start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

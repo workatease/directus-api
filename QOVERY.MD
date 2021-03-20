@@ -26,3 +26,5 @@ qovery project env add STORAGE_LOCAL_ROOT '/mnt/upload' -p Agrigates
 
 qovery project env add KEY "63c5f9d4-010c-4204-b90a-f6f1d0f9a07b" -p Agrigates
 qovery project env add SECRET "AjOEWL_jfYgbRH1C5oFvJpRu_1lkpQ0X" -p Agrigates
+
+qovery project env add NPM_CONFIG_LOGLEVEL verbose -p Agrigates
