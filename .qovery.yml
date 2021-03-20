@@ -4,9 +4,9 @@ application:
   project: "Agrigates"
   organization: "QoveryCommunity"
 databases:
-- type: "MYSQL"
+- type: "POSTGRESQL"
   name: "directus"
-  version: "8"
+  version: "11"
 routers:
 - name: "main-directus-api"
   routes:
