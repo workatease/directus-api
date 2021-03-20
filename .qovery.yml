@@ -4,17 +4,17 @@ application:
   project: "Agrigates"
   organization: "QoveryCommunity"
   storage:
-  - name: "upload"
-    size: "10"
-    type: "fast_ssd"
-    mount_point: "/mnt/upload"
+    - name: "upload"
+      size: "10"
+      type: "fast_ssd"
+      mount_point: "/mnt/upload"
 databases:
-- type: "POSTGRESQL"
-  name: "directus"
-  version: "10"
+  - type: "POSTGRESQL"
+    name: "directus"
+    version: "11"
 routers:
-- name: "main-directus-api"
-  routes:
-  - application_name: "directus-api"
-    paths:
-    - "/*"
+  - name: "main-directus-api"
+    routes:
+      - application_name: "directus-api"
+        paths:
+          - "/*"
