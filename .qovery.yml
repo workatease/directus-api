@@ -11,7 +11,7 @@ application:
 databases:
   - type: "POSTGRESQL"
     name: "directus"
-    version: "11"
+    version: "11.11.0"
 routers:
   - name: "main-directus-api"
     routes:
