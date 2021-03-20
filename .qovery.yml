@@ -4,7 +4,6 @@ application:
   project: "Agrigates"
   organization: "QoveryCommunity"
   cpu: 1
-  dockerfile: directus/Dockerfile
   storage:
     - name: "upload"
       size: "10"
