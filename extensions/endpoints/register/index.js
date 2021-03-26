@@ -50,8 +50,8 @@ module.exports = function registerEndpoint(router, { services, env, exceptions, 
           .then((results) => {
             return results;
           });
-        const { email, first_name, last_name } = req.body;
-        const user = { email, role: role.id, first_name, last_name, status: "invited" };
+        const { email, firsName, lastName } = req.body;
+        const user = { email, role: role.id, first_name: firsName, last_name: lastName, status: "invited" };
         await userService.create(user);
         const expiresIn = env.INVITE_TOKEN_EXPIRE_IN || "7d";
         const payload = { email, scope: "invite" };
