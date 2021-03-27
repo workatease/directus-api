@@ -31,7 +31,7 @@ module.exports = function registerEndpoint(router, { services, env, exceptions, 
   const sendInviteMail = require("./mail").default;
   const jwt = require("jsonwebtoken");
 
-  const { InvalidCredentialsException, ServiceUnavailableException } = exceptions;
+  const { ServiceUnavailableException } = exceptions;
   const { UsersService, RolesService } = services;
   router.post(
     "/",
@@ -69,7 +69,7 @@ module.exports = function registerEndpoint(router, { services, env, exceptions, 
       } catch (error) {
         logger.error(error);
         if (error instanceof RecordNotUniqueException) {
-          throw new InvalidCredentialsException("Email id is already registered");
+          throw new ServiceUnavailableException("Email id is already registered");
         }
         throw error;
 
