@@ -1,12 +1,20 @@
+"use strict";
+
+exports.__esModule = true;
+exports.default = void 0;
+
 /* to be used until mail is provided as a service in directus
  * See the below discussion
  * https://github.com/directus/directus/discussions/4664
  *
  */
-function getMailTransporter(env) {
+const getMailTransporter = async (env) => {
   const nodemailer = require("nodemailer");
   const logger = require("directus/dist/logger").default;
+  const ServiceUnavailableException = require("directus/dist/exceptions/service-unavailable")
+    .ServiceUnavailableException;
   let transporter = null;
+
   if (env.EMAIL_TRANSPORT === "sendmail") {
     transporter = nodemailer.createTransport({
       sendmail: true,
@@ -29,45 +37,57 @@ function getMailTransporter(env) {
   }
 
   if (transporter) {
-    transporter.verify((error) => {
-      if (error) {
-        logger.warn(`Couldn't connect to email server.`);
-        logger.warn(`Email verification error: ${error}`);
-      } else {
-        logger.info(`Email connection established`);
-      }
-    });
+    return await transporter
+      .verify()
+      .then((data) => console.log(data))
+      .catch((error) => {
+        if (error) {
+          //Promise.reject("Could not send email... Please retry after some time ");
+          throw new ServiceUnavailableException("Could not send email... Please retry after some time ");
+          logger.warn(`Couldn't connect to email server.`);
+          logger.warn(`Email verification error: ${error}`);
+        } else {
+          logger.info(`Email connection established`);
+        }
+      });
   }
-  return transporter;
-}
-
-module.exports = async function sendInviteMail(env, projectInfo, user, acceptURL, expiresIn) {
-  // @TODO expire time needed to be added in the email
-
-  const { Liquid } = require("liquidjs");
-  const path = require("path");
-  const liquidEngine = new Liquid({
-    root: path.resolve(env.EXTENSIONS_PATH, "templates"),
-    extname: ".liquid",
-  });
-
-  const projectLogo = `${env.PUBLIC_URL}/assets/${projectInfo?.project_logo}`;
-
-  const context = {
-    projectName: projectInfo?.project_name,
-    projectLogo,
-    homepageUrl: env.PUBLIC_URL,
-    firstName: user.first_name,
-    lastName: user.last_name,
-    activateUrl: acceptURL,
-    email: user.email,
-    url: projectLogo,
-  };
-  const html = await liquidEngine.renderFile("activate-account", context);
-  await getMailTransporter(env).sendMail({
-    from: env.EMAIL_FROM,
-    to: user.email,
-    html,
-    subject: `[${projectInfo?.project_name}] Activate your account`,
-  });
 };
+
+const sendInviteMail = async (env, projectInfo, user, acceptURL, expiresIn) => {
+  try {
+    const { Liquid } = require("liquidjs");
+
+    const path = require("path");
+
+    const liquidEngine = new Liquid({
+      root: path.resolve(env.EXTENSIONS_PATH, "templates"),
+      extname: ".liquid",
+    });
+    const projectLogo = `${env.PUBLIC_URL}/assets/${projectInfo == null ? void 0 : projectInfo.project_logo}`;
+    const context = {
+      projectName: projectInfo == null ? void 0 : projectInfo.project_name,
+      projectLogo,
+      homepageUrl: env.PUBLIC_URL,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      activateUrl: acceptURL,
+      email: user.email,
+      url: projectLogo,
+    };
+    const html = await liquidEngine.renderFile("activate-account", context);
+
+    const transporter = await getMailTransporter(env);
+
+    await transporter.sendMail({
+      from: env.EMAIL_FROM,
+      to: user.email,
+      html,
+      subject: `[${projectInfo == null ? void 0 : projectInfo.project_name}] Activate your account`,
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+var _default = sendInviteMail;
+exports.default = _default;

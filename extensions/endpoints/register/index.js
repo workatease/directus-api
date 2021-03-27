@@ -25,10 +25,13 @@ module.exports = function registerEndpoint(router, { services, env, exceptions, 
   // @TODO need it to take from context once it is implemented by directus
   const asyncHandler = require("directus/dist/utils/async-handler").default;
   const response = require("directus/dist/middleware/respond").respond;
+  const RecordNotUniqueException = require("directus/dist/exceptions/database/record-not-unique")
+    .RecordNotUniqueException;
   const logger = require("directus/dist/logger").default;
-  const sendInviteMail = require("./mail");
+  const sendInviteMail = require("./mail").default;
   const jwt = require("jsonwebtoken");
-  const { ServiceUnavailableException } = exceptions;
+
+  const { InvalidCredentialsException, ServiceUnavailableException } = exceptions;
   const { UsersService, RolesService } = services;
   router.post(
     "/",
@@ -59,13 +62,19 @@ module.exports = function registerEndpoint(router, { services, env, exceptions, 
         const inviteURL = url ?? env.PUBLIC_URL + "/admin/accept-invite";
         const acceptURL = inviteURL + "?token=" + token;
         const projectInfo = await database.select(["project_name", "project_logo"]).from("directus_settings").first();
+
         await sendInviteMail(env, projectInfo, user, acceptURL, expiresIn);
         res.locals.payload = { success: true };
         return next();
       } catch (error) {
-        console.log(error);
-        // throws the error correctly so left this the same
-        return next(error);
+        if (error instanceof RecordNotUniqueException) {
+          throw new InvalidCredentialsException("Email id is already registered");
+        }
+        throw error;
+
+        // res.locals.payload = payload;
+        // // throws the error correctly so left this the same
+        // return next(error);
       }
     }),
     response
