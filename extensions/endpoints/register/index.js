@@ -67,6 +67,7 @@ module.exports = function registerEndpoint(router, { services, env, exceptions, 
         res.locals.payload = { success: true };
         return next();
       } catch (error) {
+        logger.error(error);
         if (error instanceof RecordNotUniqueException) {
           throw new InvalidCredentialsException("Email id is already registered");
         }
