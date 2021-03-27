@@ -37,7 +37,7 @@ const getMailTransporter = async (env) => {
   }
 
   if (transporter) {
-    return await transporter
+    await transporter
       .verify()
       .then((data) => console.log(data))
       .catch((error) => {
@@ -51,6 +51,7 @@ const getMailTransporter = async (env) => {
         }
       });
   }
+  return transporter;
 };
 
 const sendInviteMail = async (env, projectInfo, user, acceptURL, expiresIn) => {
