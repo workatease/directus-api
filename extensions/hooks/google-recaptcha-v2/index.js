@@ -16,7 +16,7 @@ module.exports = function registerHook({ env, exceptions }) {
         const response = await axios.post(VERIFY_ENDPOINT, postBody);
         const { data } = response;
         if (data.success === false) {
-          throw new BaseException(data["error-codes"], 400, "failure");
+          throw new BaseException(data["error-codes"], 400, "RECAPTCHA_FAILURE");
         }
       }
     },
