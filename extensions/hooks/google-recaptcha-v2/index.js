@@ -6,6 +6,12 @@ module.exports = function registerHook({ env, exceptions }) {
   const VERIFY_ENDPOINT = "https://www.google.com/recaptcha/api/siteverify";
   return {
     "auth.login.before": async function (input) {
+      // @TODO
+      // make sure the some endpoints has to be validated
+      // like a list of url if it does not have a re captcha response then fail the request
+      if (env.RECAPTCHA_SECRET_KEY || env.RECAPTCHA_SECRET_KEY === "") {
+        throw new BaseException("key is missing", 500, "");
+      }
       const captcha = input["g-recaptcha-response"];
       if (captcha) {
         const postBody = querystring.stringify({
