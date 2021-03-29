@@ -9,7 +9,11 @@ module.exports = function registerHook({ env, exceptions }) {
       // @TODO
       // make sure the some endpoints has to be validated
       // like a list of url if it does not have a re captcha response then fail the request
-      if (env.RECAPTCHA_SECRET_KEY || env.RECAPTCHA_SECRET_KEY === "") {
+      if (
+        env.RECAPTCHA_SECRET_KEY === undefined ||
+        env.RECAPTCHA_SECRET_KEY === null ||
+        env.RECAPTCHA_SECRET_KEY === ""
+      ) {
         throw new BaseException("key is missing", 500, "");
       }
       const captcha = input["g-recaptcha-response"];
