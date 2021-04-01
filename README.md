@@ -1,13 +1,28 @@
 # directus-api
 
-A repo to manually move the directus Directus API to Heroku's Free Dynos 
+A repo to manually move the directus API to Heroku's Free Dynos and much more...
 
+---
 
-Set Permission for Custom Register Endpoint for Public Role
+## Custom Endpoints
 
-Role Read
-![image](https://user-images.githubusercontent.com/57198612/112697706-87b83b00-8e5e-11eb-9ba3-a9fe18aec3b4.png)
-User Create
-![image](https://user-images.githubusercontent.com/57198612/112697833-ccdc6d00-8e5e-11eb-857d-b86016be3cf8.png)
-User field vaidation to secure the status user register endpoint
-![image](https://user-images.githubusercontent.com/57198612/112697908-f09fb300-8e5e-11eb-8c95-13fe3434bd29.png)
+### 1. Custom Register Flow
+
+1. user register with first name,last Name and Email
+2. send email to verify the email
+3. user verifies email by clicking on the link and sets the new password
+
+Configuration Steps [click here](extensions/endpoints/register/README.md)
+
+---
+
+## Hooks
+
+### 1. Google [reCAPTCHA](https://www.google.com/recaptcha/about/) v2
+
+Google reCAPTCHA added for `auth.login.before` hook to verify the google response from Front End before signin and signup pages.
+
+- [x] Google reCAPTCHA
+- [ ] Mandate URL list from environment variables
+
+Configuration Steps [click here](extensions/hooks/google-recaptcha-v2/README.md)
