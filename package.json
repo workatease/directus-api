@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "directus": "^9.0.0-rc.57",
+    "directus": "^9.0.0-rc.59",
     "mysql": "^2.18.1",
     "pg": "^8.5.1"
   },
