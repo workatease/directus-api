@@ -1,4 +1,7 @@
-// extensions/hooks/google-recaptcha-v2/index.js
+/**
+ * @type {import('directus/dist/types').HookRegisterFunction}
+ *
+ */
 module.exports = function registerHook({ env, exceptions }) {
   const querystring = require("querystring");
   const axios = require("axios");
