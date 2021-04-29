@@ -8,7 +8,6 @@ module.exports = function registerHook({ env, exceptions, services }) {
   const utils = require("./utils");
   return {
     "files.update": async function ({ item, accountability, schema, database, payload, collection }) {
-      console.log(item, payload);
       const { AssetsService, FilesService } = services;
       const options = { knex: database, accountability, schema, collection };
       const assetService = new AssetsService(options);
@@ -18,9 +17,6 @@ module.exports = function registerHook({ env, exceptions, services }) {
         const buffer = await assetService.getAsset(key, {});
         let data = {};
         ffmpeg.ffprobe(buffer.stream, async function (err, metadata) {
-          console.log("file2 metadata:");
-          console.dir(metadata);
-          console.log(err);
           if (err) {
             logger.warn(`Couldn't extract MetaData information from file: ${key}`);
             logger.warn(err);
