@@ -6,6 +6,11 @@ module.exports = function registerHook({ env, exceptions, services }) {
   const ffmpeg = require("fluent-ffmpeg");
   const logger = require("directus/dist/logger").default;
   const utils = require("./utils");
+  const ffprobeStatic = require("ffprobe-static");
+  const ffmpegPath = require("ffmpeg-static");
+  ffmpeg.setFfmpegPath(ffmpegPath);
+  ffmpeg.setFfprobePath(ffprobeStatic.path);
+
   return {
     "files.update": async function ({ item, accountability, schema, database, payload, collection }) {
       const { AssetsService, FilesService } = services;
