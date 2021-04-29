@@ -143,7 +143,7 @@ var getVideoDuration = function getVideoDuration(streams) {
         var element = _step3.value;
 
         if (element.codec_type === "video" && element.duration) {
-          value = element.duration;
+          value = parseInt(element.duration);
           break;
         }
       }
