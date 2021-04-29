@@ -1,0 +1,40 @@
+/**
+ * @type {import('directus/dist/types').HookRegisterFunction}
+ *
+ */
+module.exports = function registerHook({ env, exceptions, services }) {
+  const ffmpeg = require("fluent-ffmpeg");
+  const logger = require("directus/dist/logger").default;
+  const utils = require("./utils");
+  return {
+    "files.update": async function ({ item, accountability, schema, database, payload, collection }) {
+      console.log(item, payload);
+      const { AssetsService, FilesService } = services;
+      const options = { knex: database, accountability, schema, collection };
+      const assetService = new AssetsService(options);
+      const fileService = new FilesService(options);
+      const key = item[0];
+      if (payload.type && payload.type.startsWith("video/")) {
+        const buffer = await assetService.getAsset(key, {});
+        let data = {};
+        ffmpeg.ffprobe(buffer.stream, async function (err, metadata) {
+          console.log("file2 metadata:");
+          console.dir(metadata);
+          console.log(err);
+          if (err) {
+            logger.warn(`Couldn't extract MetaData information from file: ${key}`);
+            logger.warn(err);
+          }
+          if (metadata) {
+            data.height = utils.getHeight(metadata.streams);
+            data.width = utils.getWidth(metadata.streams);
+            data.metadata = JSON.stringify(metadata);
+            data.duration = utils.getVideoDuration(metadata.streams);
+
+            await fileService.updateOne(key, data);
+          }
+        });
+      }
+    },
+  };
+};
