@@ -18,9 +18,10 @@ module.exports = function registerEndpoint(router, { services, env, exceptions, 
     "/",
     asyncHandler(async (req, res, next) => {
       try {
-        const userService = new UsersService({ schema: req.schema, accountability: req.accountability });
-        const roleService = new RolesService({ schema: req.schema, accountability: req.accountability });
-        const mailService = new MailService({ schema: req.schema, accountability: req.accountability });
+        const options = { schema: req.schema, accountability: req.accountability };
+        const userService = new UsersService(options);
+        const roleService = new RolesService(options);
+        const mailService = new MailService(options);
         const url = env.INVITE_URL;
         const role = await roleService
           .readSingleton({
