@@ -12,10 +12,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "directus": "^9.0.0-rc.61",
+    "directus": "^9.0.0-rc.62",
     "ffmpeg-static": "^4.3.0",
     "ffprobe-static": "^3.0.0",
     "fluent-ffmpeg": "^2.1.2",
+    "get-audio-duration": "^2.0.3",
     "mysql": "^2.18.1",
     "pg": "^8.5.1"
   },

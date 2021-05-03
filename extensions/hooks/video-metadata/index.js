@@ -8,6 +8,7 @@ module.exports = function registerHook({ env, exceptions, services }) {
   const utils = require("./utils");
   const ffprobeStatic = require("ffprobe-static");
   const ffmpegPath = require("ffmpeg-static");
+  const getAudioDurationInSeconds = require("get-audio-duration").getAudioDurationInSeconds;
   ffmpeg.setFfmpegPath(ffmpegPath);
   ffmpeg.setFfprobePath(ffprobeStatic.path);
 
@@ -35,6 +36,16 @@ module.exports = function registerHook({ env, exceptions, services }) {
             await fileService.updateOne(key, data);
           }
         });
+      }
+      if (payload.type && payload.type.startsWith("audio/")) {
+        /**
+         * @TODO
+         *  still testing
+         */
+        const buffer = await assetService.getAsset(key, {});
+        let data = {};
+        data.duration = await getAudioDurationInSeconds(buffer.stream);
+        await fileService.updateOne(key, data);
       }
     },
   };
